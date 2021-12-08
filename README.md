@@ -8,11 +8,11 @@ Your assignment page on Canvas should contain instructions for submitting this p
 
 ### Database
 
-Open `data/schemes.db3` using a graphical tool like SQLite Studio and study the data inside the `schemes` and `steps` tables. The data can be reset at any time by executing `npm run seed`.
+[x] Open `data/schemes.db3` using a graphical tool like SQLite Studio and study the data inside the `schemes` and `steps` tables. The data can be reset at any time by executing `npm run seed`.
 
 ### API
 
-Open `api/schemes/scheme-router.js` and study the specification for each endpoint. You do not need to make any changes to this file.
+[x] Open `api/schemes/scheme-router.js` and study the specification for each endpoint. You do not need to make any changes to this file.
 
 - `[GET] /api/schemes`
 - `[GET] /api/schemes/:scheme_id`
@@ -22,11 +22,11 @@ Open `api/schemes/scheme-router.js` and study the specification for each endpoin
 
 ### Middleware Functions
 
-Write middleware functions in `api/schemes/scheme-middleware.js` following the instructions inside that file:
+[x] Write middleware functions in `api/schemes/scheme-middleware.js` following the instructions inside that file:
 
-- [ ] `checkSchemeId`
-- [ ] `validateScheme`
-- [ ] `validateStep`
+- [x] `checkSchemeId`
+- [x] `validateScheme`
+- [x] `validateStep`
 
 ### Database Functions
 
