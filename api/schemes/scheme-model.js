@@ -35,17 +35,20 @@ async function findById(scheme_id) {
     .where("sc.scheme_id", scheme_id)
     .orderBy("st.step_number", "asc");
   const result = { steps: [] };
-  result.scheme_id = rows[0].scheme_id;
+  result.scheme_id = Number(scheme_id);
   result.scheme_name = rows[0].scheme_name;
 
-  rows.forEach(row => {
-    result.steps.push({
-      step_id: row.step_id,
-      step_number: row.step_number,
-      instructions: row.instructions,
-    })
-  })
+  rows.forEach((row) => {
+    if (row.step_id) {
+      result.steps.push({
+        step_id: row.step_id,
+        step_number: row.step_number,
+        instructions: row.instructions,
+      });
+    }
+  });
   return result;
+
   /*
     1B- Study the SQL query below running it in SQLite Studio against `data/schemes.db3`:
 
@@ -116,13 +119,13 @@ async function findById(scheme_id) {
 async function findSteps(scheme_id) {
   // EXERCISE C
   const rows = await db("schemes as sc")
-  .leftJoin("steps as st", "st.scheme_id", "sc.scheme_id")
-  .select("st.instructions", "st.*", "scheme_name")
-  .where("sc.scheme_id", scheme_id)
-  .orderBy("st.step_number", "asc")
+    .leftJoin("steps as st", "st.scheme_id", "sc.scheme_id")
+    .select("st.instructions", "st.*", "scheme_name")
+    .where("sc.scheme_id", scheme_id)
+    .orderBy("st.step_number", "asc");
 
-  if(rows[0].step_id) {
-    return rows; 
+  if (rows[0].step_id) {
+    return rows;
   } else {
     return [];
   }
@@ -161,27 +164,25 @@ async function findSteps(scheme_id) {
 
 async function add(scheme) {
   // EXERCISE D
-  const [scheme_id] = await db("schemes")
-  .insert(scheme);
-  const newScheme = await db("schemes")
-  .where("scheme_id", scheme_id)
-  return newScheme
+  const [scheme_id] = await db("schemes").insert(scheme);
+  const newScheme = await db("schemes").where("scheme_id", scheme_id).first();
+  return newScheme;
   /*
     1D- This function creates a new scheme and resolves to _the newly created scheme_.
   */
- 
 }
 
 async function addStep(scheme_id, step) {
   // EXERCISE E
-  return db("steps").insert( { ...step, scheme_id } )
+  return db("steps")
+    .insert({ ...step, scheme_id })
     .then(() => {
       return db("steps as st")
         .join("schemes as sc", "sc.scheme_id", "st.scheme_id")
         .select("step_id", "step_number", "instructions", "scheme_name")
         .orderBy("step_number")
         .where("sc.scheme_id", scheme_id);
-    })
+    });
   /*
     1E- This function adds a step to the scheme with the given `scheme_id`
     and resolves to _all the steps_ belonging to the given `scheme_id`,
