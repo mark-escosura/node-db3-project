@@ -32,8 +32,8 @@ Your assignment page on Canvas should contain instructions for submitting this p
 
 Write db access functions in `api/schemes/scheme-model.js` following the instructions inside that file:
 
-- [ ] `find`
-- [ ] `findById`
+- [x] `find`
+- [x] `findById`
 - [ ] `findSteps`
 - [ ] `add`
 - [ ] `addStep`
