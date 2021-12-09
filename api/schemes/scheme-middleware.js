@@ -18,7 +18,7 @@ const checkSchemeId = async (req, res, next) => {
         message: `scheme with scheme_id ${scheme_id} not found`,
       });
     } else {
-      req.schemes = scheme;
+      req.scheme = scheme;
       next();
     }
   } catch (err) {
@@ -35,15 +35,14 @@ const checkSchemeId = async (req, res, next) => {
   }
 */
 const validateScheme = async (req, res, next) => {
+  const { scheme_name } = req.body;
   try {
-    if (req.body.scheme_name || !req.body.scheme_name.trim()) {
+    if (!scheme_name || scheme_name === "" || typeof scheme_name !== "string") {
       next({
         status: 400,
         message: "invalid scheme_name",
       });
     } else {
-      req.body.scheme_name = req.body.scheme_name.trim()
-      res.json(req.schemes);
       next();
     }
   } catch (err) {
@@ -61,29 +60,22 @@ const validateScheme = async (req, res, next) => {
   }
 */
 const validateStep = async (req, res, next) => {
-  const { instructions, step_number } = req.body;
-  const step = await Schemes.addStep(req.body);
   try {
-    if (!instructions || !instructions.trim()) {
-      next({
-        status: 400,
-        message: "invalid step",
-      });
-    } else if (isNaN(step_number)) {
-      next({
-        status: 400,
-        message: "invalid step",
-      });
-    } else if (step_number < 1) {
-      next({
-        status: 400,
-        message: "invalid step",
-      });
+    const { instructions, step_number } = req.body;
+
+    if (
+      !instructions ||
+      instructions === "" ||
+      typeof instructions !== "string" ||
+      step_number < 1 ||
+      typeof step_number !== "number"
+    ) {
+      next({ status: 400, message: "invalid step" });
     } else {
-      req.step = step;
+      next();
     }
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
